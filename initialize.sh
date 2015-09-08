@@ -13,6 +13,9 @@ mkdir client/source
 mkdir server/include
 mkdir server/source
 
+mkdir core/include
+mkdir core/source
+
 mkdir experiment
 
 touch Makefile
