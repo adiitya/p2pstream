@@ -22,6 +22,7 @@ class Connection
 	public:	
 		Connection(int sock);
 		Connection(char* ip, int port);
+		~Connection();
 		char* getIp();
 		int getPort();
 		void sendData(char* message);

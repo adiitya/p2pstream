@@ -5,6 +5,7 @@ Connection::Connection(int sock)
 	type = CONN_TYPE::SERVER_CONN;
 	sock_fd = sock;
 }
+
 Connection::Connection(char* ip, int port)
 {
 	type = CONN_TYPE::CLIENT_CONN;
@@ -25,14 +26,23 @@ Connection::Connection(char* ip, int port)
 		throw std::runtime_error("Connection::Unable to connect");
 	}
 }
+
+Connection::~Connection()
+{
+	if(shutdown(sock_fd, SHUT_RDWR) != 0)
+		throw std::runtime_error("Connection::UUnable to close the connection");	
+}
+
 char* Connection::getIp()
 {
 	return (type == CLIENT_CONN)?ip:NULL;
 }
+
 int Connection::getPort()
 {
 	return (type == CLIENT_CONN)?port:-1;
 }
+
 void Connection::sendData(char* message)
 {
 	size_t echolen = strlen(message);
@@ -40,6 +50,7 @@ void Connection::sendData(char* message)
 		throw std::runtime_error("Connection::Mismatch in number of sent bytes");
 	}
 }
+
 int Connection::recData(char *buffer, int BUFFSIZE)
 {
 	int bytes = 0;
