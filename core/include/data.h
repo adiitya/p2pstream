@@ -2,7 +2,7 @@
 #define DATA_H
 
 #include <fstream>
-#include <stdexcpt>
+#include <stdexcept>
 
 
 /********************
@@ -29,7 +29,7 @@ private:
 	char* fileName;
 	int chunkSize;
 
-	ifstream fileStream;
+	std::ifstream fileStream;
 };
 
 #endif /* DATA_H */
