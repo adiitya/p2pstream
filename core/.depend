@@ -1,0 +1,4 @@
+# DO NOT DELETE
+
+./source/data.o: ./include/data.h
+./source/connections.o: ./include/connections.h
