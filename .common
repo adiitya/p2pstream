@@ -1,0 +1,32 @@
+# Directories
+INC_DIR 	:= ./include
+SRC_DIR 	:= ./source
+OBJ_DIR 	:= ./obj
+
+
+# Tools for building
+COM 		:= g++
+ARCH 		:= ar
+MAKEDEPEND  := makedepend 
+SED 		:= sed 
+
+
+# Flags for building tools
+CFLAGS 		:= -c -Wall -Wextra -error -std=c++11 -I$(INC_DIR)
+ARFLAG 		:= -vrcs
+
+
+# Path source file
+SRC_PATH	:= $(wildcard $(SRC_DIR)/*.cpp)
+
+
+# Source file name
+SRC_FILE 	:= $(notdir $(SRC_PATH))
+
+
+# Path to obj file
+OBJ_PATH 	= $(SRC_FILE:%.cpp=$(OBJ_DIR)/%.o)
+
+
+# Dependency file
+DEP 		:= .depend
