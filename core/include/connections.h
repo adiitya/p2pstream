@@ -21,6 +21,7 @@ public:
 	Connection();
 	Connection(int sock);
 	Connection(std::string ip, int port);
+	~Connection();
 
 	std::string getIp();
 	int getPort();

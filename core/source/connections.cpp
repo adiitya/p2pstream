@@ -10,6 +10,11 @@ Connection::Connection(int sock)
 	socketId = sock;
 }
 
+Connection::~Connection()
+{
+	if(shutdown(socketId, SHUT_RDWR) != 0)
+		throw std::runtime_error("Connection::UUnable to close the connection");	
+}
 
 Connection::Connection(std::string ip, int port)
 {
@@ -36,11 +41,6 @@ Connection::Connection(std::string ip, int port)
 	}
 }
 
-Connection::~Connection()
-{
-	if(shutdown(sock_fd, SHUT_RDWR) != 0)
-		throw std::runtime_error("Connection::UUnable to close the connection");	
-}
 
 std::string Connection::getIp()
 {
