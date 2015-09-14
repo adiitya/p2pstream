@@ -7,6 +7,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <netinet/in.h>
+#include <stdexcept>
 
 #define MAXPENDING 5    /* Max connection requests */
 #define BUFFSIZE 32
