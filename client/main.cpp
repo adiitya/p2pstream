@@ -7,7 +7,7 @@
 int main()
 {
 	char* data = "p2pstream project";
-	std::string a = "cas";
+	std::string a = "10.42.0.53";
 	int port = 2045;
 
 	try
