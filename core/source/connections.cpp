@@ -37,12 +37,12 @@ Connection::Connection(std::string ip, int port)
 
 std::string Connection::getIp()
 {
-	return (type == CLIENT_CONN)? ip : "";
+	return (type == CONN_TYPE::CLIENT_CONN)? ip : "";
 }
 
 int Connection::getPort()
 {
-	return (type == CLIENT_CONN)? port : -1;
+	return (type == CONN_TYPE::CLIENT_CONN)? port : -1;
 }
 
 void Connection::sendData(const void* data, int len)
