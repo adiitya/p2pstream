@@ -10,6 +10,7 @@ Connection::Connection(int sock)
 	socketId = sock;
 }
 
+
 Connection::Connection(std::string ip, int port)
 {
 	type = CONN_TYPE::CLIENT_CONN;
@@ -35,6 +36,12 @@ Connection::Connection(std::string ip, int port)
 	}
 }
 
+Connection::~Connection()
+{
+	if(shutdown(sock_fd, SHUT_RDWR) != 0)
+		throw std::runtime_error("Connection::UUnable to close the connection");	
+}
+
 std::string Connection::getIp()
 {
 	return (type == CONN_TYPE::CLIENT_CONN)? ip : "";
@@ -52,6 +59,7 @@ void Connection::sendData(const void* data, int len)
 		throw std::runtime_error("Connection::sendData Mismatch in number of sent bytes");
 	}
 }
+
 
 int Connection::receiveData(void* buffer, int len)
 {
