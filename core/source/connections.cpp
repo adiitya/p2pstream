@@ -3,13 +3,16 @@
 
 Connection::Connection()
 {
-	closed = false;
+	// socket not opened
+	closed = true;
 }
 
 Connection::Connection(int sock)
 {
 	type 		= CONN_TYPE::SERVER_CONN;
 	socketId 	= sock;
+
+	// opened by OS
 	closed 		= false;
 }
 
@@ -43,6 +46,7 @@ Connection::Connection(std::string ip, int port)
 		throw std::runtime_error("Connection::Connection: Unable to connect");
 	}
 
+	// manually opened
 	closed = false;
 }
 
