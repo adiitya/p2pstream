@@ -1,6 +1,7 @@
 #include <server.h>
 #include <stdexcept>
 #include <string>
+#include <iostream>
 
 int main(int argc, char const *argv[])
 {
@@ -9,6 +10,7 @@ int main(int argc, char const *argv[])
 		fprintf(stderr,"USAGE: ./server.exe <port>\n");
 		exit(1);
 	}
+
 	try
 	{
 		Server server;
@@ -16,7 +18,9 @@ int main(int argc, char const *argv[])
 	}
 	catch(const std::exception& e)
 	{
-		perror((std::string("Communication Failed - ") + e.what()).c_str());
+		std::cout<<"Catch these exception"<<std::endl;
+		std::cerr<<e.what()<<std::endl;
+		std::cerr<<strerror(errno)<<std::endl;
 	}
 	return 0;
 }

@@ -8,6 +8,8 @@
 class Server
 {
 public:
+	~Server();
+	
 	void startListening(int port);
 	void respondToClient(int clientsock);
 	void close();
