@@ -44,13 +44,11 @@ void Server::startListening(int port, std::string serverIP)
 void Server::respondToClient(int clientSock)
 {
 	Connection clientConn(clientSock);
+	Data data("temp.txt", 20);
+	clientConn.receiveData(data);
 
-	char buffer[1024] = {0};
-	clientConn.receiveData(buffer, 1024);
+	printf("Received message from client: \n");
 
-	printf("Received message from client: %s \n", buffer);
-
-	clientConn.sendData("test data", 9);
 	clientConn.close();
 }
 

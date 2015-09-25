@@ -12,19 +12,20 @@ Client::~Client()
 {
 	delete connection;
 }
+
 void Client::createConnection(std::string ip, int port)
 {
 	connection = new Connection(ip, port);
 }
 
-void Client::sendData(const void* data, int len)
+void Client::sendData(const Data &data)
 {
-	connection->sendData(data, len);
+	connection->sendData(data);
 }
 
-void Client::receiveData(void* data, int len)
+void Client::receiveData()
 {
-	connection->receiveData(data, len);
+	//connection->receiveData();
 }
 
 void Client::closeConnection()
