@@ -7,7 +7,7 @@ Server::~Server()
 	close();
 }
 
-void Server::startListening(int port)
+void Server::startListening(int port, std::string serverIP)
 {
 	int clientSock;
 	struct sockaddr_in server, client;
@@ -19,7 +19,7 @@ void Server::startListening(int port)
 
     server.sin_family = AF_INET;
     server.sin_port = htons(port);
-    inet_pton(server.sin_family, "10.42.0.1", &server.sin_addr.s_addr);
+    inet_pton(server.sin_family, serverIP.c_str(), &server.sin_addr.s_addr);
     
 	if(bind(serversock, (struct sockaddr*) &server, sizeof(struct sockaddr_in)) == -1)
 		throw std::runtime_error("Server::startListening: Failed to bind server fd to server structure");

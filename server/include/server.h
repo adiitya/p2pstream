@@ -10,7 +10,7 @@ class Server
 public:
 	~Server();
 	
-	void startListening(int port);
+	void startListening(int port, std::string serverIP);
 	void respondToClient(int clientsock);
 	void close();
 private:

@@ -4,14 +4,21 @@
 #include <cstring>
 #define BUFFLEN 1024
 
-int main()
+int main(int argc, char const *argv[])
 {
 	/**
 	 * Server credentials(IPaddr and port) and the message to be sent(data)
 	*/
-	char* data = "p2pstreamproject";
-	std::string IPaddr = "10.42.0.1";
-	int port = 2045;
+	if(argc != 3)
+	{
+		std::cout<<"USAGE: ./client.exe <serverIPaddr> <port>\n";
+		exit(1);
+	}
+	std::string data;
+	std::string IPaddr = argv[1];
+	int port = atoi(argv[2]);
+	std::cout<<"Enter message to be sent: "<<std::endl;
+	std::cin>>data;
 
 	try
 	{
@@ -20,7 +27,7 @@ int main()
 		client.createConnection(IPaddr, port);
 
 		//sends data 
-		client.sendData((void*)data, strlen(data));
+		client.sendData((void*)data.c_str(), data.size());
 
 		char buffer[BUFFLEN] = {0};
 		client.receiveData(buffer, BUFFLEN);

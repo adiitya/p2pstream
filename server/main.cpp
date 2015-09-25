@@ -5,16 +5,16 @@
 
 int main(int argc, char const *argv[])
 {
-	if(argc != 2)
+	if(argc != 3)
 	{
-		fprintf(stderr,"USAGE: ./server.exe <port>\n");
+		fprintf(stderr,"USAGE: ./a.exe <ownIP> <port>\n");
 		exit(1);
 	}
 
 	try
 	{
 		Server server;
-		server.startListening(atoi(argv[1]));
+		server.startListening(atoi(argv[2]),argv[1]);
 	}
 	catch(const std::exception& e)
 	{
