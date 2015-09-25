@@ -45,12 +45,10 @@ void Server::respondToClient(int clientSock)
 {
 	Connection clientConn(clientSock);
 
-	char buffer[1024] = {0};
-	clientConn.receiveData(buffer, 1024);
+	clientConn.receiveData();
 
-	printf("Received message from client: %s \n", buffer);
+	printf("Received message from client: \n");
 
-	clientConn.sendData("test data", 9);
 	clientConn.close();
 }
 
