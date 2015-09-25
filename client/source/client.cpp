@@ -3,6 +3,11 @@
 #include <iostream>
 #endif
 
+Client::Client()
+{
+	connection = NULL;
+}
+
 Client::~Client()
 {
 	delete connection;

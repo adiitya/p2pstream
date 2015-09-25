@@ -9,6 +9,7 @@ class Client
 {
 public:
 	//Client(std::string ip, int port);
+	Client();
 	~Client();
 	void createConnection(std::string ip, int port);
 	void sendData(const void* data, int len);
