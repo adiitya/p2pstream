@@ -14,6 +14,7 @@
 #include <unistd.h>
 #include <netinet/in.h>
 
+#include <data.h>
 
 class Connection
 {
@@ -26,8 +27,8 @@ public:
 	std::string getIp();
 	int getPort();
 
-	void sendData(const void* data, int len);
-	int receiveData(void* buffer, int len);
+	void sendData(Data& data);
+	void receiveData(Data& data);
 
 	void close();
 

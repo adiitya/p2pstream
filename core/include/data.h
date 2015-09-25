@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <stdexcept>
+#include <string>
 
 
 /********************
@@ -18,18 +19,25 @@
 class Data
 {
 public:
-	Data(char* name, int length);
+	enum TYPE
+	{
+		READ,
+		WRITE
+	};
+
+	Data(std::string, int length, TYPE type);
 	~Data();
 
 	int getChunkSize();
-	char* getFileName();
-	void getData(char* buffer, int length);
+	std::string getFileName();
+	void getData(void* buffer, int length);
+	bool finish();
 
 private:
-	char* fileName;
+	std::string fileName;
 	int chunkSize;
 
-	std::ifstream fileStream;
+	std::fstream fileStream;
 };
 
 #endif /* DATA_H */

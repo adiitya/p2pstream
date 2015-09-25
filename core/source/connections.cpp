@@ -1,5 +1,5 @@
 #include <connections.h>
-
+#include <iostream>
 
 Connection::Connection()
 {
@@ -32,14 +32,14 @@ Connection::Connection(std::string ip, int port)
 
 	socketAddr.sin_family 		= AF_INET;
 	socketAddr.sin_port 		= htons(port);
-	inet_pton(socketAddr.sin_family, ip.c_str(), &socketAddr.sin_addr.s_addr);
+	inet_pton(socketAddr.sin_family, ip.c_str(), &(socketAddr.sin_addr.s_addr));
 	
 	//Creating socket
 	if ((socketId = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) 
 	{
 		throw std::runtime_error("Connection::Connection: Failed to create socket");
 	}
-
+	
 	//Connecting to created socket
 	if(connect(socketId, (struct sockaddr*) &socketAddr, sizeof(socketAddr)) < 0) 
 	{
@@ -61,28 +61,48 @@ int Connection::getPort()
 	return (type == CONN_TYPE::CLIENT_CONN)? port : -1;
 }
 
-void Connection::sendData(const void* data, int len)
+void Connection::sendData(Data& data)
 {
-	if(send(socketId, data, len, 0) != len)
+	int len = data.getChunkSize();
+	char* buffer = new char[len];
+
+	while(!data.finish())
 	{
-		throw std::runtime_error("Connection::sendData: Cannot send data");
+		data.readData((void*)buffer, len);
+		if(send(socketId, buffer, len, 0) != len)
+		{
+			delete[] buffer;
+			throw std::runtime_error("Connection::sendData: Cannot send data");
+		}
 	}
+
+	delete[] buffer;
 }
 
 
-int Connection::receiveData(void* buffer, int len)
+void Connection::receiveData(Data& data)
 {
-	int bytes = recv(socketId, buffer, len, 0);
-	if(bytes < 0)
-	{
-		throw std::runtime_error("Connection::receiveData: Failed to receive bytes from server");
-  	}
-  	else if(bytes == 0)
-  	{
-  		throw std::runtime_error("Connection::receiveData: Client has closed connection");
-  	}
+	int len = data.getChunkSize();
+	char* buffer = new char[len];
 
-  	return bytes;
+	while(!data.finish())
+	{
+		int bytes = recv(socketId, buffer, len, 0);
+		if(bytes < 0)
+		{
+			delete[] buffer;
+			throw std::runtime_error("Connection::receiveData: Failed to receive bytes from server");
+	  	}
+	  	else if(bytes == 0)
+	  	{
+	  		delete[] buffer;
+	  		throw std::runtime_error("Connection::receiveData: Client has closed connection");
+	  	}
+
+	  	data.writeData((void*)buffer, len);
+	}
+
+	delete[] buffer;
 }
 
 void Connection::close()
