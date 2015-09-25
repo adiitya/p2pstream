@@ -2,43 +2,48 @@
 
 
 Connection::Connection()
-{}
+{
+	closed = false;
+}
 
 Connection::Connection(int sock)
 {
-	type = CONN_TYPE::SERVER_CONN;
-	socketId = sock;
+	type 		= CONN_TYPE::SERVER_CONN;
+	socketId 	= sock;
+	closed 		= false;
 }
 
 Connection::~Connection()
 {
-	if(shutdown(socketId, SHUT_RDWR) != 0)
-		throw std::runtime_error("Connection::UUnable to close the connection");	
+	close();
 }
 
 Connection::Connection(std::string ip, int port)
 {
 	type = CONN_TYPE::CLIENT_CONN;
+
 	this->ip = ip;
 	this->port = port;
 	
 	memset(&socketAddr, 0, sizeof(socketAddr));
 
-	socketAddr.sin_family = AF_INET;
-	socketAddr.sin_addr.s_addr = inet_addr(ip.c_str());
-	socketAddr.sin_port = htons(port);
+	socketAddr.sin_family 		= AF_INET;
+	socketAddr.sin_port 		= htons(port);
+	inet_pton(socketAddr.sin_family, ip.c_str(), &socketAddr.sin_addr.s_addr);
 	
 	//Creating socket
-	if ((socketId = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) 
+	if ((socketId = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) 
 	{
-		throw std::runtime_error("Connection::Connection Failed to create socket");
+		throw std::runtime_error("Connection::Connection: Failed to create socket");
 	}
 
 	//Connecting to created socket
-	if(connect(socketId, (struct sockaddr *) &socketAddr, sizeof(socketAddr)) < 0) 
+	if(connect(socketId, (struct sockaddr*) &socketAddr, sizeof(socketAddr)) < 0) 
 	{
-		throw std::runtime_error("Connection::Connection Unable to connect");
+		throw std::runtime_error("Connection::Connection: Unable to connect");
 	}
+
+	closed = false;
 }
 
 
@@ -56,18 +61,21 @@ void Connection::sendData(const void* data, int len)
 {
 	if(send(socketId, data, len, 0) != len)
 	{
-		throw std::runtime_error("Connection::sendData Mismatch in number of sent bytes");
+		throw std::runtime_error("Connection::sendData: Cannot send data");
 	}
 }
 
 
 int Connection::receiveData(void* buffer, int len)
 {
-	int bytes = 0;
-
-	if((bytes = recv(socketId, buffer, len, 0)) < 1)
+	int bytes = recv(socketId, buffer, len, 0);
+	if(bytes < 0)
 	{
-		throw std::runtime_error("Connection::receiveData Failed to receive bytes from server");
+		throw std::runtime_error("Connection::receiveData: Failed to receive bytes from server");
+  	}
+  	else if(bytes == 0)
+  	{
+  		throw std::runtime_error("Connection::receiveData: Client has closed connection");
   	}
 
   	return bytes;
@@ -75,5 +83,11 @@ int Connection::receiveData(void* buffer, int len)
 
 void Connection::close()
 {
-	::close(socketId);
+	if(closed)
+		return;
+
+	if(::close(socketId) == -1)
+		throw std::runtime_error("Connection::close: Cannot close connection");
+
+	closed = true;
 }

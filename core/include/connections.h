@@ -38,6 +38,7 @@ private:
 	int port;
 	std::string ip;
 	CONN_TYPE type;
+	bool closed;
 	struct sockaddr_in socketAddr;
 };
 
