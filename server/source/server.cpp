@@ -44,8 +44,8 @@ void Server::startListening(int port, std::string serverIP)
 void Server::respondToClient(int clientSock)
 {
 	Connection clientConn(clientSock);
-
-	clientConn.receiveData();
+	Data data("temp.txt", 20);
+	clientConn.receiveData(data);
 
 	printf("Received message from client: \n");
 

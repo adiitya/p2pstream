@@ -18,14 +18,14 @@ void Client::createConnection(std::string ip, int port)
 	connection = new Connection(ip, port);
 }
 
-void Client::sendData(const Data data)
+void Client::sendData(const Data &data)
 {
-	connection->sendData(&data);
+	connection->sendData(data);
 }
 
 void Client::receiveData()
 {
-	connection->receiveData();
+	//connection->receiveData();
 }
 
 void Client::closeConnection()

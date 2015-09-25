@@ -25,11 +25,11 @@ int main(int argc, char const *argv[])
 		//establishes the socket connection with server
 		client.createConnection(IPaddr, port);
 		//sends data 
-		client.sendData(&data);
+		client.sendData(data);
 
-		client.receiveData();
+		//client.receiveData();
 
-		std::cout<<"Received message: "<<buffer<<std::endl;
+		std::cout<<"message send "<<std::endl;
 
 		//closes the socket connection
 		client.closeConnection();
