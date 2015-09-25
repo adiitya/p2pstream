@@ -2,7 +2,6 @@
 #define DEBUG
 #include <iostream>
 #include <cstring>
-#define BUFFLEN 1024
 
 int main(int argc, char const *argv[])
 {
@@ -14,23 +13,21 @@ int main(int argc, char const *argv[])
 		std::cout<<"USAGE: ./client.exe <serverIPaddr> <port>\n";
 		exit(1);
 	}
-	std::string data;
+	std::string file;
 	std::string IPaddr = argv[1];
 	int port = atoi(argv[2]);
-	std::cout<<"Enter message to be sent: "<<std::endl;
-	std::cin>>data;
-
+	std::cout<<"Enter file to be sent: "<<std::endl;
+	std::cin>>file;
+	Data data(file, 20);
 	try
 	{
 		Client client;
 		//establishes the socket connection with server
 		client.createConnection(IPaddr, port);
-
 		//sends data 
-		client.sendData((void*)data.c_str(), data.size());
+		client.sendData(&data);
 
-		char buffer[BUFFLEN] = {0};
-		client.receiveData(buffer, BUFFLEN);
+		client.receiveData();
 
 		std::cout<<"Received message: "<<buffer<<std::endl;
 
