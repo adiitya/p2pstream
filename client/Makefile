@@ -12,7 +12,7 @@ SRC_PATH 	+= main.cpp
 SRC_FILE 	+= main.cpp
 CFLAGS 		+= -I../core/include
 
-LFLAG 		:= -Wall -Wextra -error -std=c++11 -lcore -L../core
+LFLAG 		:= -Wall -Wextra -std=c++11 -lcore -L../core
 
 #--------------------------------------------------------------------------
 

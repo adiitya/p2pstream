@@ -12,7 +12,7 @@ SED 		:= sed
 
 
 # Flags for building tools
-CFLAGS 		:= -c -Wall -Wextra -error -std=c++11 -I$(INC_DIR)
+CFLAGS 		:= -c -Wall -Wextra -std=c++11 -I$(INC_DIR)
 ARFLAG 		:= -vrcs
 
 
