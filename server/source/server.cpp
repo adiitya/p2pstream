@@ -1,5 +1,4 @@
 #include <server.h>
-
 #include <iostream>
 
 Server::~Server()
@@ -44,7 +43,7 @@ void Server::startListening(int port, std::string serverIP)
 void Server::respondToClient(int clientSock)
 {
 	Connection clientConn(clientSock);
-	Data data("/downloads/temp.txt", 20, Data::TYPE::WRITE);
+	Data data("downloads/temp.txt", 20, Data::TYPE::WRITE);
 	clientConn.receiveData(data);
 
 	printf("Received message from client: \n");
