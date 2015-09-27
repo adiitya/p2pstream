@@ -43,7 +43,7 @@ bool Data::finish()
 }
 
 
-void Data::readData(void* buffer, int length)
+int Data::readData(void* buffer, int length)
 {
 	if(!fileStream.is_open())
 	{
@@ -54,19 +54,27 @@ void Data::readData(void* buffer, int length)
 		throw std::runtime_error("Data::getData: Buffer size is small");
 	}
 
-	fileStream.read((char *)buffer, chunkSize);
+	int readLen = fileStream.end - fileStream.tellg();
+	if(readLen > chunkSize)
+		readLen = chunkSize;
+	
+	fileStream.read((char *)buffer, readLen);
+
+	return readLen;
 }
 
-void Data::writeData(void* buffer, int length)
+int Data::writeData(void* buffer, int length)
 {
 	if(!fileStream.is_open())
 	{
 		throw std::runtime_error("Data:writeData: File is not opened to write");
 	}
-	if(length < chunkSize)
+	if(length > chunkSize)
 	{
-		throw std::runtime_error("Data::writeData: Buffer size is small");
+		throw std::runtime_error("Data::writeData: Buffer size is big");
 	}
 
-	fileStream.write((char*) buffer, chunkSize);
+	fileStream.write((char*) buffer, length);
+
+	return length;
 }

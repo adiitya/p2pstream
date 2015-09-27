@@ -68,8 +68,10 @@ void Connection::sendData(Data& data)
 
 	while(!data.finish())
 	{
-		data.readData((void*)buffer, len);
-		if(send(socketId, buffer, len, 0) != len)
+		memset(buffer, 0, len);
+
+		int sendLen = data.readData((void*)buffer, len);
+		if(send(socketId, buffer, sendLen, 0) != sendLen)
 		{
 			delete[] buffer;
 			throw std::runtime_error("Connection::sendData: Cannot send data");
@@ -87,6 +89,8 @@ void Connection::receiveData(Data& data)
 
 	while(!data.finish())
 	{
+		memset(buffer, 0, len);
+
 		int bytes = recv(socketId, buffer, len, 0);
 		if(bytes < 0)
 		{
@@ -99,7 +103,7 @@ void Connection::receiveData(Data& data)
 	  		throw std::runtime_error("Connection::receiveData: Client has closed connection");
 	  	}
 
-	  	data.writeData((void*)buffer, len);
+	  	data.writeData((void*)buffer, bytes);
 	}
 
 	delete[] buffer;
