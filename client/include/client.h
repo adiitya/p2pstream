@@ -12,7 +12,7 @@ public:
 	Client();
 	~Client();
 	void createConnection(std::string ip, int port);
-	void sendData(const Data data);
+	void sendData(Data& data);
 	void receiveData();
 	void closeConnection();
 

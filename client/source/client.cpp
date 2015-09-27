@@ -18,7 +18,7 @@ void Client::createConnection(std::string ip, int port)
 	connection = new Connection(ip, port);
 }
 
-void Client::sendData(const Data &data)
+void Client::sendData(Data& data)
 {
 	connection->sendData(data);
 }

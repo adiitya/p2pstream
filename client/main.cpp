@@ -18,7 +18,7 @@ int main(int argc, char const *argv[])
 	int port = atoi(argv[2]);
 	std::cout<<"Enter file to be sent: "<<std::endl;
 	std::cin>>file;
-	Data data(file, 20);
+	Data data(file, 20, Data::TYPE::READ);
 	try
 	{
 		Client client;

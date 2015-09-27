@@ -30,7 +30,8 @@ public:
 
 	int getChunkSize();
 	std::string getFileName();
-	void getData(void* buffer, int length);
+	void readData(void* buffer, int length);
+	void writeData(void* buffer, int length);
 	bool finish();
 
 private:
