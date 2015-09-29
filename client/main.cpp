@@ -2,6 +2,7 @@
 #define DEBUG
 #include <iostream>
 #include <cstring>
+#include <data.h>
 
 int main(int argc, char const *argv[])
 {
@@ -18,7 +19,7 @@ int main(int argc, char const *argv[])
 	int port = atoi(argv[2]);
 	std::cout<<"Enter file to be sent: "<<std::endl;
 	std::cin>>file;
-	Data data(file, 20, Data::TYPE::READ);
+	Data data(file, CHUNK_SIZE, Data::TYPE::READ);
 	try
 	{
 		Client client;
