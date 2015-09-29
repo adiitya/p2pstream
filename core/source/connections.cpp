@@ -86,7 +86,7 @@ void Connection::sendData(Data& data)
 void Connection::receiveData()
 {
 	struct MHeader header = receiveHeader();
-	Data data(header.name, CHUNK_SIZE, Data::TYPE::WRITE);
+	Data data("downloads/" + std::string(header.name), CHUNK_SIZE, Data::TYPE::WRITE);
 
 	int len = data.getChunkSize();
 	char* buffer = new char[len];
