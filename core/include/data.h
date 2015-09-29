@@ -39,6 +39,7 @@ private:
 	int chunkSize;
 
 	std::fstream fileStream;
+	long long fileSize;
 };
 
 #endif /* DATA_H */

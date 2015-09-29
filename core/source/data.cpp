@@ -16,6 +16,11 @@ Data::Data(std::string name, int length, TYPE type)
 	{
 		throw std::runtime_error("Data::Data: File cannot be opened");
 	}
+
+	fileStream.seekg(0, fileStream.end);
+	if(type == TYPE::READ)
+		fileSize = fileStream.tellg();
+	fileStream.seekg(0, fileStream.beg);
 }
 
 Data::~Data()
@@ -54,12 +59,16 @@ int Data::readData(void* buffer, int length)
 		throw std::runtime_error("Data::getData: Buffer size is small");
 	}
 
-	int readLen = fileStream.end - fileStream.tellg();
+	std::cout<<fileSize<<" : "<<fileStream.tellg()<<std::endl;
+	long long readLen = fileSize - fileStream.tellg();
 	if(readLen > chunkSize)
 		readLen = chunkSize;
 	
-	fileStream.read((char *)buffer, readLen);
-
+	std::cout<<readLen<<std::endl;
+	if(readLen < chunkSize)
+		fileStream.read((char *)buffer, readLen + 1);
+	else
+		fileStream.read((char *)buffer, readLen);
 	return readLen;
 }
 
