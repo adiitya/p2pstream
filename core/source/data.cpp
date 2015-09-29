@@ -42,6 +42,11 @@ std::string Data::getFileName()
 	return fileName;
 }
 
+long long Data::getFileSize()
+{
+	return fileSize;
+}
+
 bool Data::finish()
 {
 	return fileStream.eof();

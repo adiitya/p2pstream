@@ -63,6 +63,7 @@ int Connection::getPort()
 
 void Connection::sendData(Data& data)
 {
+	sendHeader(data.getFileName(), data.getFileSize());
 	int len = data.getChunkSize();
 	char* buffer = new char[len];
 
@@ -82,31 +83,47 @@ void Connection::sendData(Data& data)
 }
 
 
-void Connection::receiveData(Data& data)
+void Connection::receiveData()
 {
+	struct MHeader header = receiveHeader();
+	Data data(header.name, CHUNK_SIZE, Data::TYPE::WRITE);
+
 	int len = data.getChunkSize();
 	char* buffer = new char[len];
-
-	while(!data.finish())
+	std::cout<<"Receiving data :" <<std::endl;
+	memset(buffer, 0, len);
+	int bytes;
+	while((bytes = recv(socketId, buffer, len, 0)) > 0)
 	{
-		memset(buffer, 0, len);
-
-		int bytes = recv(socketId, buffer, len, 0);
-		if(bytes < 0)
-		{
-			delete[] buffer;
-			throw std::runtime_error("Connection::receiveData: Failed to receive bytes from server");
-	  	}
-	  	else if(bytes == 0)
-	  	{
-	  		delete[] buffer;
-	  		throw std::runtime_error("Connection::receiveData: Client has closed connection");
-	  	}
-
 	  	data.writeData((void*)buffer, bytes);
+	  	memset(buffer, 0, len);
 	}
+	if(bytes < 0)
+		throw std::runtime_error("Connection::receiveData: Failed to receive bytes from server");
 
 	delete[] buffer;
+}
+
+void Connection::sendHeader(std::string fileName, long long fileSize)
+{
+	struct MHeader header;
+	memcpy(header.name, fileName.c_str(), MAX_FILE_NAME);
+	header.length = fileSize;
+
+	if(send(socketId, &header, MAX_HEADER_SIZE, 0) != MAX_HEADER_SIZE)
+	{
+		throw std::runtime_error("Connection::sendHeader: Cannot send header");
+	}
+}
+
+struct MHeader Connection::receiveHeader()
+{
+	struct MHeader header;
+	if(recv(socketId, &header, MAX_HEADER_SIZE, 0) < 0)
+	{
+		throw std::runtime_error("Connection::receiveHeader::Unable to receive header");
+	}
+	return header;
 }
 
 void Connection::close()
