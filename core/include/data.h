@@ -15,6 +15,19 @@
 // passed in constructor, everytime getData() is called
 // that chunkSize is read
 
+const int CHUNK_SIZE = 1024*1024;
+const int MAX_FILE_NAME = 100;
+const int MAX_HEADER_SIZE = MAX_FILE_NAME + 8;
+struct MHeader
+{
+	/*
+		This header is sent just after the connection is established.
+		It contains name of the file and total length of the file in bytes.
+		The header is of 108 bytes. (100--name, 8--length)
+	*/
+	char name[MAX_FILE_NAME];
+	long long length;
+};
 
 class Data
 {
@@ -30,6 +43,7 @@ public:
 
 	int getChunkSize();
 	std::string getFileName();
+	long long getFileSize();
 	int readData(void* buffer, int length);
 	int writeData(void* buffer, int length);
 	bool finish();

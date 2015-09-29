@@ -28,7 +28,9 @@ public:
 	int getPort();
 
 	void sendData(Data& data);
-	void receiveData(Data& data);
+	void receiveData();
+	struct MHeader receiveHeader();
+	void sendHeader(std::string fileName, long long fileSize);
 
 	void close();
 
