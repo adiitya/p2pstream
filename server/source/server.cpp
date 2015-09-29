@@ -36,15 +36,16 @@ void Server::startListening(int port, std::string serverIP)
 
 		std::cout<<inet_ntoa(client.sin_addr)<<" connected"<<std::endl;
 		
+
 		respondToClient(clientSock);
+		
 	}	
 }
 
 void Server::respondToClient(int clientSock)
 {
 	Connection clientConn(clientSock);
-	Data data("downloads/temp.txt", 20, Data::TYPE::WRITE);
-	clientConn.receiveData(data);
+	clientConn.receiveData();
 
 	printf("Received message from client: \n");
 
