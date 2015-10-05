@@ -1,6 +1,7 @@
 #include <server.h>
 #include <iostream>
 
+
 Server::~Server()
 {
 	close();
@@ -27,6 +28,8 @@ void Server::startListening(int port, std::string serverIP)
 	if(listen(serversock, MAXPENDING) == -1)
 		throw std::runtime_error("Server::startListening: Couldn't listen to socket connection");
 
+	//std::cout<<connThreads.size()<<std::endl;
+	pthread_t thread;
 	while(true)
 	{
 		unsigned int clientlen = sizeof(struct sockaddr_in);
@@ -35,21 +38,27 @@ void Server::startListening(int port, std::string serverIP)
 			throw std::runtime_error("Server::startListening: Failed to establish connection with client");
 
 		std::cout<<inet_ntoa(client.sin_addr)<<" connected"<<std::endl;
-		
+		std::cout<<"hello"<<std::endl;
 
-		respondToClient(clientSock);
+	
+		//connThreads.push_back(tmp);
+		if(pthread_create(&thread, NULL, respondToClient, (void*)&clientSock) < 0)
+			throw std::runtime_error("Server::startListening: Cannot create thread");
 		
+		//std::cout<<connThreads.size()<<" host connected"<<std::endl;	
 	}	
 }
 
-void Server::respondToClient(int clientSock)
+void* Server::respondToClient(void* clientSock)
 {
-	Connection clientConn(clientSock);
+	Connection clientConn(*((int*)clientSock));
 	clientConn.receiveData();
 
 	printf("Received message from client: \n");
 
 	clientConn.close();
+
+	return NULL;
 }
 
 void Server::close()
