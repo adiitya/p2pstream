@@ -18,7 +18,7 @@ int main(int argc, char const *argv[])
 	std::string IPaddr = argv[1];
 	int port = atoi(argv[2]);
 	std::cout<<"Enter file to be sent: "<<std::endl;
-	std::cin>>file;
+	std::getline(std::cin,file);
 	Data data(file, CHUNK_SIZE, Data::TYPE::READ);
 	try
 	{
