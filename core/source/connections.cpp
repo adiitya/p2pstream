@@ -63,8 +63,8 @@ int Connection::getPort()
 
 void Connection::sendData(Data& data)
 {
-	sendHeader(data.getFileName(), data.getFileSize());
-	int len = data.getChunkSize();
+	//sendHeader(data.getFileName(), data.getFileSize());
+	int len = CHUNK_SIZE;//data.getChunkSize();
 	char* buffer = new char[len];
 
 	while(!data.finish())
@@ -85,10 +85,10 @@ void Connection::sendData(Data& data)
 
 void Connection::receiveData()
 {
-	struct MHeader header = receiveHeader();
-	Data data("downloads/" + std::string(header.name), CHUNK_SIZE, Data::TYPE::WRITE);
-
-	int len = data.getChunkSize();
+	//struct MHeader header = receiveHeader();
+	//Data data("downloads/" + std::string(header.name), CHUNK_SIZE, Data::TYPE::WRITE);
+	Data data;
+	int len = CHUNK_SIZE;// data.getChunkSize();
 	char* buffer = new char[len];
 	std::cout<<"Receiving data :" <<std::endl;
 	memset(buffer, 0, len);
@@ -102,28 +102,6 @@ void Connection::receiveData()
 		throw std::runtime_error("Connection::receiveData: Failed to receive bytes from server");
 
 	delete[] buffer;
-}
-
-void Connection::sendHeader(std::string fileName, long long fileSize)
-{
-	struct MHeader header;
-	memcpy(header.name, fileName.c_str(), MAX_FILE_NAME);
-	header.length = fileSize;
-
-	if(send(socketId, &header, MAX_HEADER_SIZE, 0) != MAX_HEADER_SIZE)
-	{
-		throw std::runtime_error("Connection::sendHeader: Cannot send header");
-	}
-}
-
-struct MHeader Connection::receiveHeader()
-{
-	struct MHeader header;
-	if(recv(socketId, &header, MAX_HEADER_SIZE, 0) < 0)
-	{
-		throw std::runtime_error("Connection::receiveHeader::Unable to receive header");
-	}
-	return header;
 }
 
 void Connection::close()

@@ -1,12 +1,11 @@
-#include <data.h>
+#include <fileData.h>
 
 #include <iostream>
 
-Data::Data(std::string name, int length, TYPE type)
+FileData::FileData(std::string name, TYPE type)
 {
 	fileName = name;
-	chunkSize = length;
-
+	
 	if(type == TYPE::READ)
 		fileStream.open(fileName, std::ifstream::in);
 	else
@@ -14,7 +13,7 @@ Data::Data(std::string name, int length, TYPE type)
 
 	if(!fileStream.is_open())
 	{
-		throw std::runtime_error("Data::Data: File cannot be opened");
+		throw std::runtime_error("FileData::FileData: File cannot be opened");
 	}
 
 	fileStream.seekg(0, fileStream.end);
@@ -23,7 +22,7 @@ Data::Data(std::string name, int length, TYPE type)
 	fileStream.seekg(0, fileStream.beg);
 }
 
-Data::~Data()
+FileData::~FileData()
 {
 	if(fileStream.is_open())
 	{
@@ -31,61 +30,55 @@ Data::~Data()
 	}
 }
 
-int Data::getChunkSize()
-{
-	return chunkSize;
-}
-
-
-std::string Data::getFileName()
+std::string FileData::getFileName()
 {
 	return fileName;
 }
 
-long long Data::getFileSize()
+long long FileData::getFileSize()
 {
 	return fileSize;
 }
 
-bool Data::finish()
+bool FileData::finish()
 {
 	return fileStream.eof();
 }
 
 
-int Data::readData(void* buffer, int length)
+int FileData::readData(void* buffer, int length)
 {
 	if(!fileStream.is_open())
 	{
-		throw std::runtime_error("Data::getData: File is not opened to read");
+		throw std::runtime_error("FileData::getData: File is not opened to read");
 	}
-	if(length < chunkSize)
+	if(length < CHUNK_SIZE)
 	{
-		throw std::runtime_error("Data::getData: Buffer size is small");
+		throw std::runtime_error("FileData::getData: Buffer size is small");
 	}
 
 	std::cout<<fileSize<<" : "<<fileStream.tellg()<<std::endl;
 	long long readLen = fileSize - fileStream.tellg();
-	if(readLen > chunkSize)
-		readLen = chunkSize;
+	if(readLen > CHUNK_SIZE)
+		readLen = CHUNK_SIZE;
 	
 	std::cout<<readLen<<std::endl;
-	if(readLen < chunkSize)
+	if(readLen < CHUNK_SIZE)
 		fileStream.read((char *)buffer, readLen + 1);
 	else
 		fileStream.read((char *)buffer, readLen);
 	return readLen;
 }
 
-int Data::writeData(void* buffer, int length)
+int FileData::writeData(void* buffer, int length)
 {
 	if(!fileStream.is_open())
 	{
-		throw std::runtime_error("Data:writeData: File is not opened to write");
+		throw std::runtime_error("FileData:writeData: File is not opened to write");
 	}
-	if(length > chunkSize)
+	if(length > CHUNK_SIZE)
 	{
-		throw std::runtime_error("Data::writeData: Buffer size is big");
+		throw std::runtime_error("FileData::writeData: Buffer size is big");
 	}
 
 	fileStream.write((char*) buffer, length);

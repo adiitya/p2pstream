@@ -1,7 +1,8 @@
 #include <server.h>
 #include <iostream>
 
-
+Server::Server()
+{}
 Server::~Server()
 {
 	close();
