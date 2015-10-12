@@ -56,8 +56,8 @@ void* Server::respondToClient(void* clientSock)
 	char name[100] = {0};
 	Data* dataRec = new BufferData(name, 100);
 	clientConn.receiveData(*dataRec);
-	//Data* dataSend = new FileData(name, FileData::TYPE::READ);
-	//clientConn.sendData(*dataSend);
+	Data* dataSend = new FileData(name, FileData::TYPE::READ);
+	clientConn.sendData(*dataSend);
 
 	printf("Message sent to client: %d \n", *((int*)clientSock));
 
