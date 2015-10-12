@@ -15,12 +15,11 @@ public:
 	Server();
 
 	void startListening(int port, std::string serverIP);
-	static void* respondToClient(void* clientsock);
+	virtual void* respondToClient(void* clientsock);
 	void close();
 private:
 	int serversock;
-
-	std::vector<pthread_t*> connThreads;
+	//std::vector<pthread_t*> connThreads;
 
 };
 
