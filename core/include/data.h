@@ -18,13 +18,13 @@ class Data
 {
 public:
 	//StringData(std::string fileName);				// to send file
-	//~Data();
-
+	virtual ~Data();
+	Data();
 	//std::string getFileName();
 	//long long getFileSize();
-	virtual int readData(void* buffer, int length);
-	virtual int writeData(void* buffer, int length);
-	virtual bool finish();
+	virtual int readData(void* buffer, int length) = 0;
+	virtual int writeData(void* buffer, int length) = 0;
+	virtual bool finish() = 0;
 };
 
 #endif /* DATA_H */
