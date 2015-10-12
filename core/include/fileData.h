@@ -9,12 +9,12 @@
 class FileData : public Data 
 {
 public:
-	enum TYPE
+	enum FTYPE
 	{
 		WRITE,
 		READ
 	};
-	FileData(std::string fileName, TYPE type);
+	FileData(std::string fileName, FTYPE type);
 	~FileData();
 
 	int readData(void* buffer, int length);

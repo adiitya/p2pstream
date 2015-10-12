@@ -2,11 +2,11 @@
 
 #include <iostream>
 
-FileData::FileData(std::string name, TYPE type)
+FileData::FileData(std::string name, FTYPE type)
 {
 	fileName = name;
 	
-	if(type == TYPE::READ)
+	if(type == FTYPE::READ)
 		fileStream.open(fileName, std::ifstream::in);
 	else
 		fileStream.open(fileName, std::ofstream::out);
@@ -17,7 +17,7 @@ FileData::FileData(std::string name, TYPE type)
 	}
 
 	fileStream.seekg(0, fileStream.end);
-	if(type == TYPE::READ)
+	if(type == FTYPE::READ)
 		fileSize = fileStream.tellg();
 	fileStream.seekg(0, fileStream.beg);
 }

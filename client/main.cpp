@@ -28,7 +28,7 @@ int main(int argc, char const *argv[])
 		client.createConnection(IPaddr, port);
 		//sends data 
 		client.sendData(*fileName);
-		Data* data = new FileData(file, FileData::TYPE::WRITE);
+		Data* data = new FileData(file, FileData::FTYPE::WRITE);
 		client.receiveData(*data);
 
 		//client.receiveData();
