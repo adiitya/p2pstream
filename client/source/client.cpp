@@ -23,9 +23,10 @@ void Client::sendData(Data& data)
 	connection->sendData(data);
 }
 
-void Client::receiveData()
+void Client::receiveData(Data& data)
 {
-	//connection->receiveData();
+	connection->receiveData(data);
+	/*Now we can play/stream or write the data received*/
 }
 
 void Client::closeConnection()

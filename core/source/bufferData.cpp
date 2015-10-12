@@ -1,6 +1,7 @@
 #include <bufferData.h>
 
 #include <string>
+#include <cstring>
 
 BufferData::BufferData(void* data, long long size)
 {

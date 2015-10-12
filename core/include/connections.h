@@ -15,6 +15,8 @@
 #include <netinet/in.h>
 
 #include <data.h>
+#include <bufferData.h>
+#include <fileData.h>
 
 class Connection
 {
@@ -28,9 +30,7 @@ public:
 	int getPort();
 
 	void sendData(Data& data);
-	void receiveData();
-	struct MHeader receiveHeader();
-	void sendHeader(std::string fileName, long long fileSize);
+	void receiveData(Data& data);
 
 	void close();
 

@@ -5,6 +5,7 @@
 #include <pthread.h>
 #include <connections.h>
 #include <string>
+#include <data.h>
 #include <vector>
 
 class Server

@@ -19,14 +19,17 @@ int main(int argc, char const *argv[])
 	int port = atoi(argv[2]);
 	std::cout<<"Enter file to be sent: "<<std::endl;
 	std::getline(std::cin,file);
-	Data data(file, CHUNK_SIZE, Data::TYPE::READ);
+
+	Data* fileName = new BufferData(const_cast<char*>(file.c_str()), file.length());
 	try
 	{
 		Client client;
 		//establishes the socket connection with server
 		client.createConnection(IPaddr, port);
 		//sends data 
-		client.sendData(data);
+		client.sendData(*fileName);
+		Data* data = new FileData(file, FileData::TYPE::WRITE);
+		client.receiveData(*data);
 
 		//client.receiveData();
 

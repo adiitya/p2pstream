@@ -13,7 +13,7 @@ public:
 	~Client();
 	void createConnection(std::string ip, int port);
 	void sendData(Data& data);
-	void receiveData();
+	void receiveData(Data& data);
 	void closeConnection();
 
 private:
