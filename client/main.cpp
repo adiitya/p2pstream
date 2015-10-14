@@ -42,4 +42,5 @@ int main(int argc, char const *argv[])
 	{
 		std::cout<<"Exception form "<<e.what()<<std::endl;
 	}
+	delete fileName;
 }

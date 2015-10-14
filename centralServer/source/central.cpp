@@ -24,7 +24,8 @@ void* CentralServer::respondToClient(void* clientSock)
 	printf("Message sent to client: %d \n", *((int*)clientSock));
 
 	clientConn.close();
-
+	delete dataRec;
+	delete dataSend;
 	return NULL;
 }
 

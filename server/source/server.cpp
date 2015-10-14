@@ -64,7 +64,8 @@ void* Server::respondToClient(void* clientSock)
 	printf("Message sent to client: %d \n", *((int*)clientSock));
 
 	clientConn.close();
-
+	delete dataSend;
+	delete dataRec;
 	return NULL;
 }
 
