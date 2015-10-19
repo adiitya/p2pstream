@@ -61,7 +61,7 @@ void* Server::respondToClient(void* clientSock)
 
 	clientConn.receiveData(*dataRec, false);
 	
-	Data* dataSend = new FileData(name, FileData::TYPE::READ);
+	Data* dataSend = new FileData(name, FileData::FTYPE::READ);
 	clientConn.sendData(*dataSend, true);
 
 	printf("Message sent to client: %d \n", *((int*)clientSock));

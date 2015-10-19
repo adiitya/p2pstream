@@ -1,5 +1,4 @@
 #include <client.h>
-#define DEBUG
 #include <iostream>
 #include <cstring>
 #include <data.h>
@@ -28,7 +27,7 @@ int main(int argc, char const *argv[])
 		client.createConnection(IPaddr, port);
 		//sends data 
 		client.sendData(*fileName, true);
-		Data* data = new FileData(file, FileData::TYPE::WRITE);
+		Data* data = new FileData(file, FileData::FTYPE::WRITE);
 		client.receiveData(*data, true);
 
 		std::cout<<"message send "<<std::endl;
