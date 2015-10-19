@@ -1,7 +1,5 @@
 #include <client.h>
-#ifdef DEBUG
 #include <iostream>
-#endif
 
 Client::Client()
 {
@@ -18,14 +16,14 @@ void Client::createConnection(std::string ip, int port)
 	connection = new Connection(ip, port);
 }
 
-void Client::sendData(Data& data)
+void Client::sendData(Data& data, bool block)
 {
-	connection->sendData(data);
+	connection->sendData(data, block);
 }
 
-void Client::receiveData(Data& data)
+void Client::receiveData(Data& data, bool block)
 {
-	connection->receiveData(data);
+	connection->receiveData(data, block);
 	/*Now we can play/stream or write the data received*/
 }
 

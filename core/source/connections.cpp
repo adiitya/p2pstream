@@ -61,10 +61,11 @@ int Connection::getPort()
 	return (type == CONN_TYPE::CLIENT_CONN)? port : -1;
 }
 
-void Connection::sendData(Data& data)
+void Connection::sendData(Data& data, bool block)
 {
-	//sendHeader(data.getFileName(), data.getFileSize());
-	int len = CHUNK_SIZE;//data.getChunkSize();
+	int flag = (!block)? MSG_DONTWAIT : 0;
+
+	int len = CHUNK_SIZE;
 	char* buffer = new char[len];
 	std::cout<<"Sending Data"<<std::endl;
 	while(!data.finish())	
@@ -72,8 +73,10 @@ void Connection::sendData(Data& data)
 		memset(buffer, 0, len);
 
 		int sendLen = data.readData((void*)buffer, len);
-		if(send(socketId, buffer, sendLen, 0) != sendLen)
-		{
+		int tmp;
+		if((tmp = send(socketId, buffer, sendLen, flag)) != sendLen)
+		{	
+			std::cout<<tmp<<std::endl;
 			delete[] buffer;
 			throw std::runtime_error("Connection::sendData: Cannot send data");
 		}
@@ -83,25 +86,28 @@ void Connection::sendData(Data& data)
 }
 
 
-void Connection::receiveData(Data& data)
+void Connection::receiveData(Data& data, bool block)
 {
-	//struct MHeader header = receiveHeader();
-	//Data data("downloads/" + std::string(header.name), CHUNK_SIZE, Data::FTYPE::WRITE);
+	int flag = (!block)? MSG_DONTWAIT : 0;
+	
+	int len = CHUNK_SIZE;
 
-	int len = CHUNK_SIZE;// data.getChunkSize();
 	char* buffer = new char[len];
 	std::cout<<"Receiving data :" <<std::endl;
 	memset(buffer, 0, len);
 	int bytes;
-	while((bytes = recv(socketId, buffer, len, MSG_DONTWAIT)) > 0)
+
+	while((bytes = recv(socketId, buffer, len, flag)) > 0)
+
 	{
 	  	data.writeData((void*)buffer, bytes);
 	  	std::cout<<buffer<<std::endl;
 	  	memset(buffer, 0, len);
 	}
-	/*if(bytes < 0)
-		throw std::runtime_error("Connection::receiveData: Failed to receive bytes from server");*/
-	std::cout<<"Data Received"<<std::endl;
+
+	if(block && bytes < 0)
+		throw std::runtime_error("Connection::receiveData: Failed to receive bytes from server");
+
 	delete[] buffer;
 }
 

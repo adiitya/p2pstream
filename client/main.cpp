@@ -27,11 +27,9 @@ int main(int argc, char const *argv[])
 		//establishes the socket connection with server
 		client.createConnection(IPaddr, port);
 		//sends data 
-		client.sendData(*fileName);
-		Data* data = new FileData(file, FileData::FTYPE::WRITE);
-		client.receiveData(*data);
-
-		//client.receiveData();
+		client.sendData(*fileName, true);
+		Data* data = new FileData(file, FileData::TYPE::WRITE);
+		client.receiveData(*data, true);
 
 		std::cout<<"message send "<<std::endl;
 
@@ -40,7 +38,9 @@ int main(int argc, char const *argv[])
 	}
 	catch(std::exception& e)
 	{
-		std::cout<<"Exception form "<<e.what()<<std::endl;
+		std::cout<<"Catch these exception"<<std::endl;
+		std::cerr<<e.what()<<std::endl;
+		std::cerr<<strerror(errno)<<std::endl;
 	}
 	delete fileName;
 }

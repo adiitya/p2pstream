@@ -58,14 +58,19 @@ void* Server::respondToClient(void* clientSock)
 	Connection clientConn(*((int*)clientSock));
 	char name[100] = {0};
 	Data* dataRec = new BufferData(name, 100);
-	clientConn.receiveData(*dataRec);
-	Data* dataSend = new FileData(name, FileData::FTYPE::READ);
-	clientConn.sendData(*dataSend);
+
+	clientConn.receiveData(*dataRec, false);
+	
+	Data* dataSend = new FileData(name, FileData::TYPE::READ);
+	clientConn.sendData(*dataSend, true);
+
 	printf("Message sent to client: %d \n", *((int*)clientSock));
 
 	clientConn.close();
-	delete dataSend;
+
 	delete dataRec;
+	delete dataSend;
+	
 	return NULL;
 }
 

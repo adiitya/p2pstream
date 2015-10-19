@@ -29,8 +29,8 @@ public:
 	std::string getIp();
 	int getPort();
 
-	void sendData(Data& data);
-	void receiveData(Data& data);
+	void sendData(Data& data, bool block);
+	void receiveData(Data& data, bool block);
 
 	void close();
 

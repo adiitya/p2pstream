@@ -17,11 +17,9 @@ const int CHUNK_SIZE = 1024 * 1024;
 class Data
 {
 public:
-	//StringData(std::string fileName);				// to send file
 	virtual ~Data();
 	Data();
-	//std::string getFileName();
-	//long long getFileSize();
+	
 	virtual int readData(void* buffer, int length) = 0;
 	virtual int writeData(void* buffer, int length) = 0;
 	virtual bool finish() = 0;
