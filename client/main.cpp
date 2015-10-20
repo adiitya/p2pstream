@@ -27,13 +27,28 @@ int main(int argc, char const *argv[])
 		client.createConnection(IPaddr, port);
 		//sends data 
 		client.sendData(*fileName, true);
-		Data* data = new FileData(file, FileData::FTYPE::WRITE);
+		char ips[100] = {0};
+		Data* data = new BufferData(ips, 100);
 		client.receiveData(*data, true);
 
-		std::cout<<"message send "<<std::endl;
+		std::cout<<"ips "<<ips<<std::endl;
 
 		//closes the socket connection
 		client.closeConnection();
+		
+		char* first_ip = strtok(ips, " ");
+		client.createConnection(first_ip, 2050);
+		((BufferData*)fileName)->reset();
+		//std::cout<<((char*)((BufferData*)(fileName))->getData())<<std::endl;
+		client.sendData(*fileName, true);
+
+		Data* actual_file = new FileData(file, FileData::FTYPE::WRITE);
+		client.receiveData(*actual_file, true);
+
+		std::cout<<"download comlwte"<<std::endl;
+
+		delete data;
+		delete actual_file;
 	}
 	catch(std::exception& e)
 	{
