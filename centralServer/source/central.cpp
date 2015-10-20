@@ -14,18 +14,23 @@ void* CentralServer::respondToClient(void* clientSock)
 {
 	Connection clientConn(*((int*)clientSock));
 	char name[100] = {0};
+
 	Data* dataRec = new BufferData(name, 100);
-	clientConn.receiveData(*dataRec);
+	clientConn.receiveData(*dataRec, false);
+	
 	std::string IP = getIP(name);
 	memcpy(name, IP.c_str(), IP.length());
 	std::cout<<name<<std::endl;
 	Data* dataSend = new BufferData(name, 100);
-	clientConn.sendData(*dataSend);
+	clientConn.sendData(*dataSend, true);
+
 	printf("Message sent to client: %d \n", *((int*)clientSock));
 
 	clientConn.close();
+	
 	delete dataRec;
 	delete dataSend;
+	
 	return NULL;
 }
 
