@@ -12,7 +12,9 @@ class BufferData : public Data
 		int writeData(void* buffer, int length);
 		bool finish();
 		int remainingData();
-	
+		void* getData();
+		void reset();
+
 	private:
 		void* data;
 		void* currentPointer;
