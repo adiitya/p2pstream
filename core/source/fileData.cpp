@@ -5,6 +5,7 @@
 FileData::FileData(std::string name, FTYPE type)
 {
 	fileName = name;
+	std::cout<<fileName<<std::endl;
 	
 	if(type == FTYPE::READ)
 		fileStream.open(fileName, std::ifstream::in);

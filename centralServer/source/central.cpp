@@ -14,23 +14,18 @@ void* CentralServer::respondToClient(void* clientSock)
 {
 	Connection clientConn(*((int*)clientSock));
 	char name[100] = {0};
-
 	Data* dataRec = new BufferData(name, 100);
 	clientConn.receiveData(*dataRec, false);
-	
 	std::string IP = getIP(name);
 	memcpy(name, IP.c_str(), IP.length());
 	std::cout<<name<<std::endl;
 	Data* dataSend = new BufferData(name, 100);
 	clientConn.sendData(*dataSend, true);
-
 	printf("Message sent to client: %d \n", *((int*)clientSock));
 
 	clientConn.close();
-	
 	delete dataRec;
 	delete dataSend;
-	
 	return NULL;
 }
 
@@ -38,6 +33,7 @@ void CentralServer::createMap()
 {
 	std::ifstream myfile("fileToIP.txt");
 	std::string file,ip;
+	std::cout<<"Creating MAP : File -> UserIP"<<std::endl;
 	if(myfile.is_open())
 	{	
 		while(!myfile.eof())
@@ -46,6 +42,8 @@ void CentralServer::createMap()
 			myfile>>ip;
 			fileToIP.insert(std::pair<std::string, std::string>(file,ip));
 		}
+		//for(mmi itr = fileToIP.begin();itr!=fileToIP.end();itr++)
+			//std::cout<<itr->first <<"  "<<itr->second<<std::endl;
 	}
 }
 

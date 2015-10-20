@@ -60,7 +60,7 @@ void* Server::respondToClient(void* clientSock)
 	Data* dataRec = new BufferData(name, 100);
 
 	clientConn.receiveData(*dataRec, false);
-	
+	std::cout<<name<<std::endl;
 	Data* dataSend = new FileData(name, FileData::FTYPE::READ);
 	clientConn.sendData(*dataSend, true);
 

@@ -89,7 +89,7 @@ void Connection::sendData(Data& data, bool block)
 void Connection::receiveData(Data& data, bool block)
 {
 	int flag = (!block)? MSG_DONTWAIT : 0;
-	
+	if(!block)sleep(1);
 	int len = CHUNK_SIZE;
 
 	char* buffer = new char[len];
