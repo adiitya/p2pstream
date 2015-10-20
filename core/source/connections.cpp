@@ -101,7 +101,7 @@ void Connection::receiveData(Data& data, bool block)
 
 	{
 	  	data.writeData((void*)buffer, bytes);
-	  	std::cout<<buffer<<std::endl;
+	  	std::cout<<bytes<<std::endl;
 	  	memset(buffer, 0, len);
 	}
 
