@@ -9,6 +9,16 @@ BufferData::BufferData(void* data, long long size)
 	dataSize = size;
 }
 
+void* BufferData::getData()
+{
+	return data;
+}
+
+void BufferData::reset()
+{
+	currentPointer = data;
+}
+
 int BufferData::readData(void* buffer, int size)
 {
 	// read from BufferData.data, write to buffer
