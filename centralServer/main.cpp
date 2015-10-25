@@ -13,8 +13,8 @@ int main(int argc, char const *argv[])
 
 	try
 	{
-		CentralServer server;
-		server.startListening(atoi(argv[2]),argv[1]);
+		CentralServer cserver;
+		cserver.startListening(atoi(argv[2]),argv[1]);
 	}
 	catch(const std::exception& e)
 	{

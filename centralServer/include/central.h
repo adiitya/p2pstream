@@ -9,18 +9,21 @@
 #include <fstream>
 #include <data.h>
 #include <iostream>
-#include <../../server/include/server.h>
+//#include <../../server/include/server.h>
 #include <map>
 
-class CentralServer : public Server
+class CentralServer //: public Server
 {
 	public:
 		CentralServer();
 		~CentralServer();
 		std::string getIP(std::string);
-		void* respondToClient(void* clientSock);
+		void startListening(int port, std::string serverIP);
+		static void* respondToClient(void* clientSock);
 		void createMap();
 		std::multimap<std::string, std::string> fileToIP;
+	private:
+		int serversock;
 };
 
 #endif /* CENTRAL_H */
