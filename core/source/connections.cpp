@@ -96,7 +96,6 @@ void Connection::receiveData(Data& data, bool block)
 	std::cout<<"Receiving data :" <<std::endl;
 	memset(buffer, 0, len);
 	int bytes;
-
 	while((bytes = recv(socketId, buffer, len, flag)) > 0)
 
 	{
