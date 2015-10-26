@@ -31,7 +31,7 @@ void Server::startListening(int port, std::string serverIP)
 		throw std::runtime_error("Server::startListening: Couldn't listen to socket connection");
 
 	//std::cout<<connThreads.size()<<std::endl;
-	//pthread_t thread;
+	pthread_t thread;
 	while(true)
 	{
 		unsigned int clientlen = sizeof(struct sockaddr_in);
@@ -45,10 +45,9 @@ void Server::startListening(int port, std::string serverIP)
 	
 		//connThreads.push_back(tmp);
 		
-	/*		if(pthread_create(&thread, NULL, respondToClient2, (void*)&clientSock) < 0)
-				throw std::runtime_error("Server::startListening: Cannot create thread");
-	*/	
-		respondToClient((void*)&clientSock);
+		if(pthread_create(&thread, NULL, respondToClient, (void*)&clientSock) < 0)
+			throw std::runtime_error("Server::startListening: Cannot create thread");
+		//respondToClient((void*)&clientSock);
 		//std::cout<<connThreads.size()<<" host connected"<<std::endl;	
 	}	
 }

@@ -15,7 +15,7 @@ public:
 	Server();
 
 	void startListening(int port, std::string serverIP);
-	virtual void* respondToClient(void* clientsock);
+	static void* respondToClient(void* clientsock);
 	void close();
 private:
 	int serversock;

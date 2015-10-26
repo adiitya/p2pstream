@@ -12,7 +12,7 @@ SRC_PATH 	+= main.cpp
 SRC_FILE 	+= main.cpp
 CFLAGS 		+= -I../core/include
 
-LFLAG 		:= ../server/obj/server.o -Wall -Wextra -std=c++11 -lcore -lpthread -L../core
+LFLAG 		:= -Wall -Wextra -std=c++11 -lcore -lpthread -L../core
 
 #--------------------------------------------------------------------------
 
