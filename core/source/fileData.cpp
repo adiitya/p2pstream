@@ -2,11 +2,14 @@
 
 #include <iostream>
 
+/*
+	This class manages data sending and recieving as a file.
+*/
 FileData::FileData(std::string name, FTYPE type)
 {
 	fileName = name;
 	std::cout<<fileName<<std::endl;
-	
+
 	if(type == FTYPE::READ)
 		fileStream.open(fileName, std::ifstream::in);
 	else
@@ -62,7 +65,7 @@ int FileData::readData(void* buffer, int length)
 	long long readLen = fileSize - fileStream.tellg();
 	if(readLen > CHUNK_SIZE)
 		readLen = CHUNK_SIZE;
-	
+
 	std::cout<<readLen<<std::endl;
 	if(readLen < CHUNK_SIZE)
 		fileStream.read((char *)buffer, readLen + 1);
