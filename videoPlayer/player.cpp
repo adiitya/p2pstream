@@ -90,6 +90,6 @@ void SFML_VLC(char* filename)
 
 int main(int argc, char** argv)
 {
-    sleep(3);
+    sleep(4);
     SFML_VLC(argv[0]);
 }
