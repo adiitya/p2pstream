@@ -17,17 +17,15 @@ int main(int argc, char const *argv[])
 	std::string file;
 	std::string IPaddr = argv[1];
 	int port = atoi(argv[2]);
-	std::cout<<"Enter file to be sent: "<<std::endl;
+	std::cout<<"What would you like to watch today? "<<std::endl;
 	std::getline(std::cin,file);
 	int id = fork();
 	if(id == 0)
 	{
-		std::cout<<"child"<<std::endl;
 		execl("../videoPlayer/player.exe", file.c_str());
 	}
 	else
 	{
-		std::cout<<"parent"<<std::endl;
 		Data* fileName = new BufferData(const_cast<char*>(file.c_str()), file.length());
 		try
 		{
@@ -39,8 +37,8 @@ int main(int argc, char const *argv[])
 			char ips[100] = {0};
 			Data* data = new BufferData(ips, 100);
 			client.receiveData(*data, true);
-
-			std::cout<<"ips "<<ips<<std::endl;
+			std::cout<<"File "<<file<<" found at IP "<<ips<<std::endl;
+			std::cout<<"Requesting File Stream from peer "<<ips<<" ..."<<std::endl;
 
 			//closes the socket connection
 			client.closeConnection();
@@ -54,7 +52,7 @@ int main(int argc, char const *argv[])
 			Data* actual_file = new FileData(file, FileData::FTYPE::WRITE);
 			client.receiveData(*actual_file, true);
 
-			std::cout<<"download comlwte"<<std::endl;
+			std::cout<<"Multimedia Streaming : Success"<<std::endl;
 
 			delete data;
 			delete actual_file;
