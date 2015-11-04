@@ -67,7 +67,7 @@ void Connection::sendData(Data& data, bool block)
 
 	int len = CHUNK_SIZE;
 	char* buffer = new char[len];
-	std::cout<<"Sending Data"<<std::endl;
+	std::cout<<"\nSending Data ...\n"<<std::endl;
 	while(!data.finish())	
 	{
 		memset(buffer, 0, len);
@@ -81,7 +81,7 @@ void Connection::sendData(Data& data, bool block)
 			throw std::runtime_error("Connection::sendData: Cannot send data");
 		}
 	}
-	std::cout<<"Data Sent"<<std::endl;
+	std::cout<<"Data Sent Successfully!\n"<<std::endl;
 	delete[] buffer;
 }
 
@@ -93,19 +93,22 @@ void Connection::receiveData(Data& data, bool block)
 	int len = CHUNK_SIZE;
 
 	char* buffer = new char[len];
-	std::cout<<"Receiving data :" <<std::endl;
+	std::cout<<"Receiving data ...\n" <<std::endl;
 	memset(buffer, 0, len);
 	int bytes;
+	int total=0;
+	std::cout<<"Amount of data buffered :"<<std::endl;
 	while((bytes = recv(socketId, buffer, len, flag)) > 0)
-
 	{
 	  	data.writeData((void*)buffer, bytes);
-	  	std::cout<<bytes<<std::endl;
+	  	total=total+bytes;
+	  	std::cout<<total/(1024*1024)<<" MB"<<"\r";//<<std::endl;
 	  	memset(buffer, 0, len);
 	}
+	std::cout<<"\n"<<std::endl;
 
 	if(block && bytes < 0)
-		throw std::runtime_error("Connection::receiveData: Failed to receive bytes from server");
+		throw std::runtime_error("Connection::receiveData: Failed to receive data from server");
 
 	delete[] buffer;
 }
