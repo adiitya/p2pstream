@@ -41,8 +41,6 @@ void CentralServer::startListening(int port, std::string serverIP)
 			throw std::runtime_error("Server::startListening: Failed to establish connection with client");
 
 		std::cout<<inet_ntoa(client.sin_addr)<<" connected"<<std::endl;
-		std::cout<<"hello"<<std::endl;
-
 	
 		//connThreads.push_back(tmp);
 		
