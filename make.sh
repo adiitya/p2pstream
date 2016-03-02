@@ -11,4 +11,7 @@ make
 cd ../server
 make
 
+cd ../centralServer
+make
+
 cd ..
