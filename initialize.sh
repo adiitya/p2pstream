@@ -1,28 +1,13 @@
 #!/bin/bash
 
-mkdir p2pstream
+if [ ! -d "core/obj" ]; then 
+	mkdir core/obj
+fi
 
-cd p2pstream
+if [ ! -d "client/obj" ]; then 
+	mkdir client/obj
+fi
 
-mkdir client
-mkdir server
-
-mkdir client/include
-mkdir client/source
-
-mkdir server/include
-mkdir server/source
-
-mkdir core/include
-mkdir core/source
-
-mkdir experiment
-
-touch Makefile
-touch .gitignore
-
-echo "/experiment/" > .gitignore
-
-git init
-
-cd ..
+if [ ! -d "server/obj" ]; then 
+	mkdir server/obj
+fi
