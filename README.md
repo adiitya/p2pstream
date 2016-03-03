@@ -13,8 +13,28 @@ p2pstream uses `peer-to-peer` paradigm on top of the `client-server` model which
 ### Classes
 p2pstream uses OOP paradigm.
 
+##### These are the core classes used by all the peer classes
+`Connection` class is used by all the peers to establish connection with central-server or any other other peer. 
+* When a peer wants to connect to another peer, this class needs the IP address and port of the peer to connect and create a connection object. 
+* Since a peer can act as both clinet/server so,  when a peer is listening for connections( Server part of a peer),the class takes a sockid as argument and creates a connection object with that peer for futher interactions. This peer can serve other peers on a different `thread` at the same time.
 
+The `Data` class handles all the work related to reading and writing data:
 
+`Data` will always transferred as stream of bytes. During sending/receiving it may be either a string (Eg. while searching for contents over various peers like movie or content name or any query to central server) or it can be a file to be downloaded or uploaded. 
+So we have two derived data classes : `BufferData` and `FileData` inheriting Data class: 
+So for sending or recieving as string we create a bufferData class object
+```sh 
+	Data* dataObj = new BufferData(char_array, size_of_array);
+```
+And for sedning and recieving on or from a file simply creating a FileData object.
+```sh 
+    Data* dataObj = new FileData(name_of_file, FileData::FTYPE::READ);
+```
+For reading and writing we just need to call the same functions of the Data class(The parent class)
+For sending or receiving, we will use the object of the `connection` class which takes as argument a `Data` object. So basically it can take any of the two data types defined above and handles them accordingly.
+
+#### UML Diagram
+![uml classes](http://i.imgur.com/EI1FBSZ.jpg)
 
 ### Installation : 
 	 git clone https://github.com/adiitya/p2pstream.git
