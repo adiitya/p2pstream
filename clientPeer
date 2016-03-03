@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd ./client
+./client.exe $1 2045
