@@ -14,4 +14,7 @@ make
 cd ../centralServer
 make
 
+cd ../VideoPlayer
+make
+
 cd ..

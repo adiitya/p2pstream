@@ -46,7 +46,7 @@ void SFML_VLC(char* filename)
     int count_arg = sizeof(vlc_arg) / sizeof(*vlc_arg);
     libvlc = libvlc_new(count_arg, vlc_arg);
    // char filename[] = "abc.mp4";
-    m = libvlc_media_new_path(libvlc, (std::string("/home/akshay/Documents/Projects/p2pstream/client/") + filename).c_str());
+    m = libvlc_media_new_path(libvlc, (std::string("../client/") + filename).c_str());
     mp = libvlc_media_player_new_from_media(m);
     libvlc_media_release(m);
 

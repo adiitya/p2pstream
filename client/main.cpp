@@ -53,7 +53,7 @@ int main(int argc, char const *argv[])
 			client.receiveData(*actual_file, true);
 
 			std::cout<<"Multimedia Streaming : Success"<<std::endl;
-
+			
 			delete data;
 			delete actual_file;
 		}
