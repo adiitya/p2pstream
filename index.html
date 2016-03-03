@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>P2pstream by adiitya</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">P2pstream</h1>
+      <h2 class="project-tagline"></h2>
+      <a href="https://github.com/adiitya/p2pstream" class="btn">View on GitHub</a>
+      <a href="https://github.com/adiitya/p2pstream/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/adiitya/p2pstream/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="p2pstream" class="anchor" href="#p2pstream" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>p2pstream</h1>
+
+<p>This project is a peer to peer live streaming application software that uses centralized peer to
+peer architecture operating on an unstructured network topology. It is implemented in c++ using raw c++ scokets and uses pthread library for <code>Multithreading</code>.
+p2pstream uses <code>peer-to-peer</code> paradigm on top of the <code>client-server</code> model which explains how a peer is both a client and a server. </p>
+
+<h3>
+<a id="architecture" class="anchor" href="#architecture" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Architecture</h3>
+
+<h4>
+<a id="model" class="anchor" href="#model" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Model:</h4>
+
+<ul>
+<li><p>A central server listening for any request for a file from any peer(Client). It responds with the IP addresses of all the peers having the requested file, by looking up a map of file to IPs. While responding </p></li>
+<li><p>The client then connects to these peers and starts downloading. </p></li>
+<li><p>The peers online when requested for a file, responds with the file. <em>A peer can serve multiple peers at the same time and can also download packets for streaming for itself.</em></p></li>
+</ul>
+
+<h3>
+<a id="classes" class="anchor" href="#classes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Classes</h3>
+
+<p>p2pstream uses OOP paradigm.</p>
+
+<h5>
+<a id="these-are-the-core-classes-used-by-all-the-peer-classes" class="anchor" href="#these-are-the-core-classes-used-by-all-the-peer-classes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>These are the core classes used by all the peer classes</h5>
+
+<p><code>Connection</code> class is used by all the peers to establish connection with central-server or any other other peer. </p>
+
+<ul>
+<li>When a peer wants to connect to another peer, this class needs the IP address and port of the peer to connect and create a connection object. </li>
+<li>Since a peer can act as both clinet/server so,  when a peer is listening for connections( Server part of a peer),the class takes a sockid as argument and creates a connection object with that peer for futher interactions. This peer can serve other peers on a different <code>thread</code> at the same time.</li>
+</ul>
+
+<p>The <code>Data</code> class handles all the work related to reading and writing data:</p>
+
+<p><code>Data</code> will always transferred as stream of bytes. During sending/receiving it may be either a string (Eg. while searching for contents over various peers like movie or content name or any query to central server) or it can be a file to be downloaded or uploaded. 
+So we have two derived data classes : <code>BufferData</code> and <code>FileData</code> inheriting Data class: 
+So for sending or recieving as string we create a bufferData class object</p>
+
+<div class="highlight highlight-source-shell"><pre>    Data<span class="pl-k">*</span> dataObj = new BufferData(char_array, size_of_array)<span class="pl-k">;</span></pre></div>
+
+<p>And for sedning and recieving on or from a file simply creating a FileData object.</p>
+
+<div class="highlight highlight-source-shell"><pre>    Data<span class="pl-k">*</span> dataObj = new FileData(name_of_file, FileData::FTYPE::READ)<span class="pl-k">;</span></pre></div>
+
+<p>For reading and writing we just need to call the same functions of the Data class(The parent class)
+For sending or receiving, we will use the object of the <code>connection</code> class which takes as argument a <code>Data</code> object. So basically it can take any of the two data types defined above and handles them accordingly.</p>
+
+<h4>
+<a id="uml-diagram" class="anchor" href="#uml-diagram" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UML Diagram</h4>
+
+<p><img src="http://i.imgur.com/EI1FBSZ.jpg?1" alt="uml classes"></p>
+
+<h3>
+<a id="installation-" class="anchor" href="#installation-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation :</h3>
+
+<pre><code> git clone https://github.com/adiitya/p2pstream.git
+ cd ./p2pstream
+ make
+</code></pre>
+
+<h3>
+<a id="how-it-works" class="anchor" href="#how-it-works" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How it works:</h3>
+
+<ol>
+<li>Start the centralServer - The backbone of the model.</li>
+</ol>
+
+<div class="highlight highlight-source-shell"><pre>        ./central <span class="pl-k">&lt;</span>Own_IP/IP_of_central_server<span class="pl-k">&gt;</span></pre></div>
+
+<ol>
+<li>Start the Peer(Client + Server)</li>
+</ol>
+
+<div class="highlight highlight-source-shell"><pre>        ./server <span class="pl-k">&lt;</span>Own_IP<span class="pl-k">&gt;</span>
+        ./client <span class="pl-k">&lt;</span>IP_of_centralServer<span class="pl-k">&gt;</span></pre></div>
+
+<h3>
+<a id="contribution" class="anchor" href="#contribution" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contribution</h3>
+
+<p>Feel free to file <a href="https://github.com/adiitya/p2pstream/issues">issues</a> and submit <a href="https://github.com/adiitya/p2pstream/pulls">pull requests</a> – contributions are welcome.</p>
+
+<h3>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License:</h3>
+
+<p>p2pstream is licensed under the <a href="aditya.mit-license.org">MIT License</a>.</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/adiitya/p2pstream">P2pstream</a> is maintained by <a href="https://github.com/adiitya">adiitya</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
