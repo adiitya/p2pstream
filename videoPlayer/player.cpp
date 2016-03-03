@@ -3,6 +3,9 @@
 #include <cassert>
 #include <unistd.h>
 
+#define WIDTH 1366
+#define HEIGHT 768
+
 using namespace sf;
 
 struct ctx
@@ -50,14 +53,14 @@ void SFML_VLC(char* filename)
     mp = libvlc_media_player_new_from_media(m);
     libvlc_media_release(m);
 
-    Uint8 e_frame[1366 * 768 * 4];
+    Uint8 e_frame[WIDTH * HEIGHT * 4];
 
     libvlc_video_set_callbacks(mp, e_lock, unlock, display, &e_frame);
-    libvlc_video_set_format(mp, "RGBA", 1366, 768, 1366 * 4);
+    libvlc_video_set_format(mp, "RGBA", WIDTH, HEIGHT, WIDTH * 4);
     libvlc_media_player_play(mp);
 
     Texture texture;
-    texture.create(1366, 768);
+    texture.create(WIDTH, HEIGHT);
     Sprite sprite;
     sprite.setTexture(texture);
 
@@ -90,6 +93,6 @@ void SFML_VLC(char* filename)
 
 int main(int argc, char** argv)
 {
-    sleep(4);
+    sleep(8);
     SFML_VLC(argv[0]);
 }
