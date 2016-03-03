@@ -65,7 +65,7 @@ int FileData::readData(void* buffer, int length)
 	
 	std::cout<<readLen<<std::endl;
 	if(readLen < CHUNK_SIZE)
-		fileStream.read((char *)buffer, readLen + 1);
+		fileStream.read((char *)buffer, readLen + 1); //Here +1 denotes eof
 	else
 		fileStream.read((char *)buffer, readLen);
 	return readLen;

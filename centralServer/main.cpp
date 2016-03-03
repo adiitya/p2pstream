@@ -14,7 +14,7 @@ int main(int argc, char const *argv[])
 	try
 	{
 		CentralServer cserver;
-		std::cout<<"Central Server running..."<<std::endl;
+		std::cout<<"Central server running..."<<std::endl;
 		cserver.startListening(atoi(argv[2]),argv[1]);
 	}
 	catch(const std::exception& e)
