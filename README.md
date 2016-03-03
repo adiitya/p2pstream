@@ -34,7 +34,7 @@ For reading and writing we just need to call the same functions of the Data clas
 For sending or receiving, we will use the object of the `connection` class which takes as argument a `Data` object. So basically it can take any of the two data types defined above and handles them accordingly.
 
 #### UML Diagram
-![uml classes](http://i.imgur.com/EI1FBSZ.jpg)
+![uml classes](http://i.imgur.com/EI1FBSZ.jpg?1)
 
 ### Installation : 
 	 git clone https://github.com/adiitya/p2pstream.git
