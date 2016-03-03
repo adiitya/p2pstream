@@ -74,4 +74,4 @@ The test was successful with a `peer` serving `multiple peers` and downloading p
 Feel free to file [issues](https://github.com/adiitya/p2pstream/issues) and submit [pull requests](https://github.com/adiitya/p2pstream/pulls) – contributions are welcome.
 
 ### License:
-p2pstream is licensed under the [MIT License](aditya.mit-license.org).
+p2pstream is licensed under the [MIT License](http://aditya.mit-license.org).
