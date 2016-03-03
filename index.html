@@ -23,8 +23,36 @@
 <a id="p2pstream" class="anchor" href="#p2pstream" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>p2pstream</h1>
 
 <p>This project is a peer to peer live streaming application software that uses centralized peer to
-peer architecture operating on an unstructured network topology. It is implemented in c++ using raw c++ scokets and uses pthread library for <code>Multithreading</code>.
+peer architecture operating on an unstructured network topology. It is implemented in c++ using raw c++ sockets and uses pthread library for <code>Multithreading</code>.
 p2pstream uses <code>peer-to-peer</code> paradigm on top of the <code>client-server</code> model which explains how a peer is both a client and a server. </p>
+
+<h3>
+<a id="installation-" class="anchor" href="#installation-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation :</h3>
+
+<pre><code> git clone https://github.com/adiitya/p2pstream.git
+ cd ./p2pstream
+ make
+</code></pre>
+
+<p><em>Note</em>: libvlc, SFML, pthread libraries should be installed before installing this.</p>
+
+<h3>
+<a id="how-it-works" class="anchor" href="#how-it-works" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How it works:</h3>
+
+<ol>
+<li>Start the centralServer - The backbone of the model.</li>
+</ol>
+
+<div class="highlight highlight-source-shell"><pre>        ./central <span class="pl-k">&lt;</span>Own_IP/IP_of_central_server<span class="pl-k">&gt;</span></pre></div>
+
+<ol>
+<li>Start the Peer(Client + Server)</li>
+</ol>
+
+<div class="highlight highlight-source-shell"><pre>        ./server <span class="pl-k">&lt;</span>Own_IP<span class="pl-k">&gt;</span>
+        ./client <span class="pl-k">&lt;</span>IP_of_centralServer<span class="pl-k">&gt;</span></pre></div>
+
+<p><em>Note :</em> For now the user need to manually enter the the File to IP mapping (i.e Name of file ---&gt; IP address of peers having the file - space separated).</p>
 
 <h3>
 <a id="architecture" class="anchor" href="#architecture" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Architecture</h3>
@@ -59,11 +87,11 @@ p2pstream uses <code>peer-to-peer</code> paradigm on top of the <code>client-ser
 So we have two derived data classes : <code>BufferData</code> and <code>FileData</code> inheriting Data class: 
 So for sending or recieving as string we create a bufferData class object</p>
 
-<div class="highlight highlight-source-shell"><pre>    Data<span class="pl-k">*</span> dataObj = new BufferData(char_array, size_of_array)<span class="pl-k">;</span></pre></div>
+<div class="highlight highlight-source-c++"><pre>    Data* dataObj = <span class="pl-k">new</span> BufferData(char_array, size_of_array);</pre></div>
 
 <p>And for sedning and recieving on or from a file simply creating a FileData object.</p>
 
-<div class="highlight highlight-source-shell"><pre>    Data<span class="pl-k">*</span> dataObj = new FileData(name_of_file, FileData::FTYPE::READ)<span class="pl-k">;</span></pre></div>
+<div class="highlight highlight-source-c++"><pre>    Data* dataObj = <span class="pl-k">new</span> FileData(name_of_file, FileData::FTYPE::READ);</pre></div>
 
 <p>For reading and writing we just need to call the same functions of the Data class(The parent class)
 For sending or receiving, we will use the object of the <code>connection</code> class which takes as argument a <code>Data</code> object. So basically it can take any of the two data types defined above and handles them accordingly.</p>
@@ -73,29 +101,34 @@ For sending or receiving, we will use the object of the <code>connection</code> 
 
 <p><img src="http://i.imgur.com/EI1FBSZ.jpg?1" alt="uml classes"></p>
 
-<h3>
-<a id="installation-" class="anchor" href="#installation-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation :</h3>
+<h4>
+<a id="implementation" class="anchor" href="#implementation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Implementation</h4>
 
-<pre><code> git clone https://github.com/adiitya/p2pstream.git
- cd ./p2pstream
- make
-</code></pre>
+<ul>
+<li>p2pstream is implemented using raw C++ sockets.</li>
+<li>It uses <code>pthread</code> library for Multithreading.</li>
+<li>It uses <code>libvlc</code> for processing the data-received.</li>
+<li>
+<code>SFML</code> is used for rendering the interface.</li>
+</ul>
 
-<h3>
-<a id="how-it-works" class="anchor" href="#how-it-works" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How it works:</h3>
-
-<ol>
-<li>Start the centralServer - The backbone of the model.</li>
-</ol>
-
-<div class="highlight highlight-source-shell"><pre>        ./central <span class="pl-k">&lt;</span>Own_IP/IP_of_central_server<span class="pl-k">&gt;</span></pre></div>
+<h4>
+<a id="demo" class="anchor" href="#demo" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Demo</h4>
 
 <ol>
-<li>Start the Peer(Client + Server)</li>
+<li>Request by one <code>Peer</code> with IP of central-server(Peer asked for the file to be downloaded):
+<img src="http://i.imgur.com/9j3mOpq.png?1" alt="client">
+</li>
+<li>Response by <code>central-server</code> with the list of IPs having file:
+<img src="http://i.imgur.com/pmTBVME.png?1" alt="central">
+</li>
+<li>Response by another <code>peer</code> with the file:
+<img src="http://i.imgur.com/slT6joq.png?1" alt="server">
+The test was successful with a <code>peer</code> serving <code>multiple peers</code> and downloading packets at the same time.</li>
+<li>Streaming video in <code>SFML Player</code>
+<img src="http://i.imgur.com/dR3yNF5.png" alt="screen">
+</li>
 </ol>
-
-<div class="highlight highlight-source-shell"><pre>        ./server <span class="pl-k">&lt;</span>Own_IP<span class="pl-k">&gt;</span>
-        ./client <span class="pl-k">&lt;</span>IP_of_centralServer<span class="pl-k">&gt;</span></pre></div>
 
 <h3>
 <a id="contribution" class="anchor" href="#contribution" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contribution</h3>
@@ -105,7 +138,7 @@ For sending or receiving, we will use the object of the <code>connection</code> 
 <h3>
 <a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License:</h3>
 
-<p>p2pstream is licensed under the <a href="aditya.mit-license.org">MIT License</a>.</p>
+<p>p2pstream is licensed under the <a href="http://aditya.mit-license.org">MIT License</a>.</p>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/adiitya/p2pstream">P2pstream</a> is maintained by <a href="https://github.com/adiitya">adiitya</a>.</span>
