@@ -26,6 +26,7 @@ _Note :_ For now the user need to manually enter the the File to IP mapping (i.e
 * The client then connects to these peers and starts downloading. 
 
 * The peers online when requested for a file, responds with the file. _A peer can serve multiple peers at the same time and can also download packets for streaming for itself._
+_Note_: The files to be served by a peer, should be in the server directory.
 
 ### Classes
 p2pstream uses OOP paradigm.
